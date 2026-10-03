@@ -45,3 +45,11 @@ Los tests de la colección están escritos para **documentar** el comportamiento
 ### OBS-01 · `GET /ping` devuelve `201 Created`
 
 Un health check debería devolver `200 OK`. No es grave, pero es otra inconsistencia en los códigos de estado.
+
+---
+
+### OBS-02 · El servidor se reinicia y borra todos los datos
+
+restful-booker reinicia su estado periódicamente: se pierden los tokens y las reservas, y los ids vuelven a empezar desde números bajos.
+Si ocurre durante una ejecución, las peticiones autenticadas devuelven `403` aunque el token se acabara de crear.
+Se detectó en CI (el PATCH tardó 6 s y devolvió 403, y la siguiente reserva creada recibió el id 24). Por eso el pipeline reintenta la colección una vez si falla.

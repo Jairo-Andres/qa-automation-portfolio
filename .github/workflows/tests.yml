@@ -12,9 +12,9 @@ jobs:
     name: UI tests (Playwright)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -33,7 +33,7 @@ jobs:
 
       - name: Subir reporte y trazas
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ui-report
           path: |
@@ -44,9 +44,9 @@ jobs:
     name: API tests (Postman + Newman)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "20"
           cache: npm
@@ -54,8 +54,15 @@ jobs:
       - name: Instalar Newman
         run: npm ci
 
+      # restful-booker se reinicia periódicamente y borra tokens y reservas.
+      # Si el reinicio coincide con la ejecución, se reintenta una vez.
       - name: Ejecutar colección de Postman
-        run: npm run test:api
+        run: |
+          npm run test:api || {
+            echo "::warning::La colección falló; reintentando por si restful-booker se reinició durante la ejecución"
+            sleep 20
+            npm run test:api
+          }
 
       - name: Resumen de resultados
         if: always()
@@ -63,7 +70,7 @@ jobs:
 
       - name: Subir reporte
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: api-report
           path: reports/
