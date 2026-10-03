@@ -42,6 +42,7 @@ Los dos suites se ejecutan automáticamente con **GitHub Actions** en cada push 
 │   └── conftest.py     # fixtures (p. ej. usuario ya logueado)
 ├── api-tests/postman/  # colección y environment de Postman
 ├── docs/BUGS.md        # bugs encontrados
+├── scripts/            # resumen de resultados para GitHub Actions
 ├── .github/workflows/  # pipeline de CI
 ├── pytest.ini          # configuración: navegador, capturas, trazas, reporte
 └── package.json        # Newman para ejecutar la colección desde consola
@@ -81,6 +82,14 @@ npm run test:api
 Reporte: `reports/api-report.html`.
 
 También se puede importar la colección y el environment de `api-tests/postman/` en Postman y ejecutarla con el **Collection Runner**.
+
+---
+
+## Ver los resultados en GitHub Actions
+
+En la pestaña **Actions**, al abrir cualquier ejecución:
+- **Summary** muestra una tabla con cada prueba de UI y de API y su resultado (generada por [scripts/test_summary.py](scripts/test_summary.py) a partir de los reportes JUnit).
+- Al final de esa misma página, en **Artifacts**, se descargan los reportes HTML completos (`ui-report` y `api-report`).
 
 ---
 

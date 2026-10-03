@@ -27,6 +27,10 @@ jobs:
       - name: Ejecutar tests de UI
         run: pytest
 
+      - name: Resumen de resultados
+        if: always()
+        run: python scripts/test_summary.py "🖥️ UI tests (Playwright)" reports/ui-junit.xml
+
       - name: Subir reporte y trazas
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,6 +56,10 @@ jobs:
 
       - name: Ejecutar colección de Postman
         run: npm run test:api
+
+      - name: Resumen de resultados
+        if: always()
+        run: python3 scripts/test_summary.py "🔌 API tests (Postman + Newman)" reports/api-junit.xml
 
       - name: Subir reporte
         if: always()

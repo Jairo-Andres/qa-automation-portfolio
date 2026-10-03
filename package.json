@@ -2,7 +2,7 @@
   "name": "qa-automation-portfolio",
   "private": true,
   "scripts": {
-    "test:api": "newman run api-tests/postman/restful-booker.postman_collection.json -e api-tests/postman/restful-booker.postman_environment.json --delay-request 200 -r cli,htmlextra --reporter-htmlextra-export reports/api-report.html"
+    "test:api": "newman run api-tests/postman/restful-booker.postman_collection.json -e api-tests/postman/restful-booker.postman_environment.json --delay-request 200 -r cli,htmlextra,junit --reporter-htmlextra-export reports/api-report.html --reporter-junit-export reports/api-junit.xml"
   },
   "devDependencies": {
     "newman": "^6.2.1",
